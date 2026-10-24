@@ -159,6 +159,63 @@
   </div>
   <footer><div class="footer-inner"><div><strong>GADGET VAULT</strong><p>Mobile accessories for everyday life.</p></div><div><p>© 2026 Gadget Vault</p><p>Prices and availability are subject to confirmation.</p></div></div></footer>
 
+<dialog id="checkoutDialog">
+  <form class="modal" id="checkoutForm">
+    <h2>Place Your Order</h2>
+    <p>Enter your delivery details to continue.</p>
+
+    <div class="field">
+      <label for="customerName">Full name *</label>
+      <input id="customerName" required maxlength="100" autocomplete="name">
+    </div>
+
+    <div class="field">
+      <label for="customerPhone">Mobile number *</label>
+      <input id="customerPhone" type="tel" required maxlength="20"
+        autocomplete="tel" placeholder="03XXXXXXXXX">
+    </div>
+
+    <div class="field">
+      <label for="customerCity">City *</label>
+      <input id="customerCity" required maxlength="80"
+        autocomplete="address-level2" placeholder="e.g. Kasur">
+    </div>
+
+    <div class="field">
+      <label for="customerAddress">Complete delivery address *</label>
+      <textarea id="customerAddress" required maxlength="500"
+        autocomplete="street-address"
+        placeholder="House number, street, area and nearby landmark"></textarea>
+    </div>
+
+    
+<div class="field">
+  <label>Payment method</label>
+  <input value="JazzCash" readonly>
+</div>
+
+<div class="notice info">
+  <strong>JazzCash Payment</strong>
+  <p>JazzCash number: 0326-4896217</p>
+  <p>Payment karne ke baad transaction ID apne paas rakhein. Order ki payment verify hone ke baad confirm ki jayegi.</p>
+</div>
+
+
+    <div id="checkoutSummary" class="notice info">
+      Your order total will appear here.
+    </div>
+
+    <div id="checkoutStatus" class="notice hidden"></div>
+
+    <div class="modal-actions">
+      <button type="button" class="btn btn-outline"
+        id="checkoutCancel">Cancel</button>
+      <button type="submit" class="btn btn-primary"
+        id="placeOrderBtn">Place Order</button>
+    </div>
+  </form>
+</dialog>
+
   <dialog id="loginDialog">
     <form class="modal" id="loginForm">
       <h2>Admin login</h2><p>Sign in using the admin email and password created in Firebase Authentication.</p>
@@ -371,13 +428,173 @@
     $("cartOpen").addEventListener("click",()=>{renderDrawer("cart");$("cartDrawer").classList.add("open");});
     $("wishlistOpen").addEventListener("click",()=>{renderDrawer("wishlist");$("cartDrawer").classList.add("open");});
     $("drawerClose").addEventListener("click",()=>$("cartDrawer").classList.remove("open"));
-    $("checkoutBtn").addEventListener("click",()=>{
-      const items=cart.map(i=>{const p=allProducts.find(x=>x.id===i.id);return p?`${p.name} x ${i.qty} — ${formatPrice(Number(p.price||0)*i.qty)}`:"";}).filter(Boolean);
-      if(!items.length){alert("Your cart is empty.");return;}
-      const total=cart.reduce((sum,i)=>{const p=allProducts.find(x=>x.id===i.id);return sum+(p?Number(p.price||0)*i.qty:0);},0);
-      const msg=`Assalam-o-Alaikum, I want to order from Gadget Vault:\n${items.join("\n")}\nTotal: ${formatPrice(total)}\nPlease confirm availability and delivery charges.`;
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`,"_blank","noopener");
-    });
+    
+$("checkoutBtn").addEventListener("click", () => {
+  const items = cart.map(i => {
+    const p = allProducts.find(x => x.id === i.id);
+    return p ? {
+      productId: p.id,
+      name: p.name,
+      price: Number(p.price || 0),
+      quantity: Number(i.qty),
+      lineTotal: Number(p.price || 0) * Number(i.qty)
+    } : null;
+  }).filter(Boolean);
+
+  if (!items.length) {
+    alert("Your cart is empty.");
+    return;
+  }
+
+  const total = items.reduce((sum, item) => sum + item.lineTotal, 0);
+
+  $("checkoutSummary").textContent =
+    `Items: ${items.length} | Total: ${formatPrice(total)} | Payment: JazzCash`;
+
+  $("checkoutStatus").classList.add("hidden");
+  $("checkoutStatus").textContent = "";
+
+  $("checkoutDialog").showModal();
+});
+
+$("checkoutCancel").addEventListener("click", () => {
+  $("checkoutDialog").close();
+});
+
+$("checkoutForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const btn = $("placeOrderBtn");
+  const status = $("checkoutStatus");
+
+  if (!cart.length) {
+    status.textContent = "Your cart is empty.";
+    status.classList.remove("hidden");
+    return;
+  }
+
+  const items = cart.map(i => {
+    const p = allProducts.find(x => x.id === i.id);
+    return p ? {
+      productId: p.id,
+      name: p.name,
+      price: Number(p.price || 0),
+      quantity: Number(i.qty),
+      lineTotal: Number(p.price || 0) * Number(i.qty)
+    } : null;
+  }).filter(Boolean);
+
+  if (!items.length) {
+    status.textContent = "Products unavailable. Please refresh and try again.";
+    status.classList.remove("hidden");
+    return;
+  }
+
+  const total = items.reduce((sum, item) => sum + item.lineTotal, 0);
+
+  const customerName = $("customerName").value.trim();
+  const customerPhone = $("customerPhone").value.trim();
+  const customerCity = $("customerCity").value.trim();
+  const customerAddress = $("customerAddress").value.trim();
+
+  if (!customerName || !customerPhone || !customerCity || !customerAddress) {
+    status.textContent = "Please fill in all required details.";
+    status.classList.remove("hidden");
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "Saving order...";
+  status.classList.remove("hidden");
+  status.textContent = "Please wait, your order is being saved.";
+
+  let waWindow = null;
+
+  try {
+    const authReady = auth.authStateReady
+      ? auth.authStateReady()
+      : Promise.resolve();
+
+    await authReady;
+
+    let user = auth.currentUser;
+
+    if (!user) {
+      const result = await signInAnonymously(auth);
+      user = result.user;
+    }
+
+    const orderData = {
+      customerUid: user.uid,
+      customerName,
+      customerPhone,
+      customerCity,
+      customerAddress,
+      paymentMethod: "JazzCash",
+      paymentStatus: "Pending Verification",
+      status: "Pending Confirmation",
+      items,
+      total,
+      createdAt: serverTimestamp()
+    };
+
+    const orderRef = await addDoc(collection(db, "orders"), orderData);
+
+    const itemLines = items.map(item =>
+      `${item.name} x ${item.quantity} — ${formatPrice(item.lineTotal)}`
+    );
+
+    const message =
+      `Assalam-o-Alaikum, I placed an order on Gadget Vault.\n` +
+      `Order ID: ${orderRef.id}\n` +
+      `Name: ${customerName}\n` +
+      `Phone: ${customerPhone}\n` +
+      `City: ${customerCity}\n` +
+      `Address: ${customerAddress}\n\n` +
+      `${itemLines.join("\n")}\n` +
+      `Total: ${formatPrice(total)}\n` +
+      `Payment: JazzCash\n` +
+      `JazzCash Number: 0326-4896217\n` +
+      `I will share my payment transaction details for verification. Please confirm availability and delivery charges.`;
+
+    waWindow = window.open(
+      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,
+      "_blank"
+    );
+
+    cart = [];
+    renderCart();
+
+    $("checkoutForm").reset();
+    $("checkoutDialog").close();
+
+    alert(
+      `Order saved successfully!\nOrder ID: ${orderRef.id}\n\n` +
+      `Payment is pending manual verification. Please send the order message on WhatsApp.`
+    );
+
+    if (!waWindow) {
+      alert(
+        "WhatsApp did not open automatically. Please contact Gadget Vault on WhatsApp and share Order ID: " +
+        orderRef.id
+      );
+    }
+  } catch (error) {
+    console.error("Order error:", error);
+
+    status.textContent =
+      "Order save nahi hua. Firebase Rules ya internet check karein. Error: " +
+      (error.code || error.message || "Unknown error");
+
+    status.classList.remove("hidden");
+
+    if (waWindow) waWindow.close();
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Place Order";
+  }
+});
+
     $("chatToggle").addEventListener("click",()=>{const open=$("chatPanel").classList.toggle("open");if(open)startCustomerChat();});
     $("chatClose").addEventListener("click",()=>$("chatPanel").classList.remove("open"));
     $("chatSend").addEventListener("click",sendChatMessage);
