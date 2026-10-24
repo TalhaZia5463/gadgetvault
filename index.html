@@ -3,6 +3,395 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0b0d">
+  <title>Gadget Vault | Mobile Accessories</title>
+  <meta name="description" content="Shop mobile accessories at Gadget Vault. Browse products and order through WhatsApp.">
+  <style>
+    :root{--bg:#101012;--ink:#f7f3e9;--muted:#b2ac9e;--card:#19191c;--line:#35332d;--accent:#d4af37;--accent2:#f0cc62;--dark:#09090b;--green:#75d6a4}
+    *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+    a{color:inherit}button,input,select,textarea{font:inherit}button{cursor:pointer}
+    .topbar{background:#0b1220;color:#dbe4f3;text-align:center;padding:8px 14px;font-size:12px;letter-spacing:.3px}
+    header{background:var(--dark);color:white;padding:18px 5vw;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:11px}.logo{width:43px;height:43px;border-radius:13px;background:linear-gradient(135deg,#f0cc62,#9b7620);display:grid;place-items:center;font-weight:900;font-size:20px;box-shadow:0 8px 24px #d4af3744}
+    .brand h1{font-size:20px;line-height:1;margin:0;letter-spacing:.3px}.brand p{margin:5px 0 0;color:#aebbd0;font-size:12px}
+    .header-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.btn{border:0;border-radius:10px;padding:11px 15px;font-weight:750;transition:.18s}.btn:hover{transform:translateY(-1px)}.btn-primary{background:var(--accent);color:white}.btn-primary:hover{background:var(--accent2)}.btn-outline{background:transparent;color:inherit;border:1px solid #ffffff40}.btn-light{background:#292519;color:#f0d985}.btn-danger{background:#fee2e2;color:#991b1b}.btn-small{padding:8px 10px;font-size:12px}
+    .hero{padding:54px 5vw 46px;background:radial-gradient(ellipse at 80% 10%,#d4af3733,transparent 35%),linear-gradient(135deg,#09090b,#201b10);color:white}
+    .hero-inner{max-width:1200px;margin:auto;display:grid;grid-template-columns:1.3fr .7fr;gap:30px;align-items:center}
+    .eyebrow{display:inline-flex;gap:8px;align-items:center;color:#f0d985;font-size:12px;font-weight:800;letter-spacing:1.7px;text-transform:uppercase}.dot{width:7px;height:7px;background:#f0cc62;border-radius:50%}
+    .hero h2{font-size:clamp(34px,5vw,58px);line-height:1.06;letter-spacing:-1.7px;margin:15px 0}.hero h2 span{color:#a99bff}.hero p{max-width:560px;color:#d6d0c4;line-height:1.7;margin:0 0 22px}.hero-visual{min-height:220px;display:grid;place-items:center;position:relative}.orb{width:min(270px,70vw);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe9a3,#d4af37 42%,#4b3910 72%);display:grid;place-items:center;box-shadow:0 20px 80px #d4af3755}.orb span{font-size:100px;filter:drop-shadow(0 15px 18px #17122b66)}
+    main{max-width:1200px;margin:auto;padding:32px 5vw 65px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:20px}.section-head h2{margin:0;font-size:27px;letter-spacing:-.6px}.section-head p{margin:6px 0 0;color:var(--muted);font-size:14px}.tools{display:flex;gap:10px;flex-wrap:wrap}.search{min-width:min(250px,75vw);border:1px solid var(--line);border-radius:10px;background:#19191c;color:var(--ink);padding:11px 13px;outline:none}.search:focus,input:focus,textarea:focus,select:focus{border-color:#d4af37;box-shadow:0 0 0 3px #d4af3719}
+    .filters{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 22px}.filter{background:#19191c;border:1px solid var(--line);border-radius:999px;padding:8px 13px;color:#c9c1ad;font-size:13px;font-weight:700}.filter.active{background:#332b16;border-color:#b9972e;color:#f7df82}
+    .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.product{background:var(--card);border:1px solid var(--line);border-radius:17px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 6px 22px #16213a05;transition:.2s}.product:hover{transform:translateY(-3px);box-shadow:0 14px 30px #16213a0d}.product-img{height:190px;background:linear-gradient(135deg,#29271f,#121214);display:grid;place-items:center;overflow:hidden}.product-img img{width:100%;height:100%;object-fit:contain;padding:12px}.product-img .fallback{font-size:56px}.product-body{padding:15px;display:flex;flex-direction:column;flex:1}.category{font-size:10px;letter-spacing:1px;font-weight:850;color:#e6c65b;text-transform:uppercase}.product h3{font-size:16px;margin:7px 0 6px}.desc{font-size:12px;color:var(--muted);line-height:1.5;margin:0 0 14px;min-height:36px}.product-bottom{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:8px}.price{font-weight:900;font-size:18px}.stock{font-size:11px;color:var(--green);margin-top:6px}.empty{grid-column:1/-1;padding:40px 20px;text-align:center;background:#19191c;border:1px dashed #cbd5e1;border-radius:16px;color:var(--muted)}
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:30px 0}.feature{background:#19191c;border:1px solid var(--line);border-radius:15px;padding:18px;display:flex;gap:12px;align-items:flex-start}.feature-icon{font-size:23px}.feature strong{display:block;font-size:14px}.feature span{display:block;color:var(--muted);font-size:12px;margin-top:5px;line-height:1.5}
+    footer{background:#0b1220;color:#dce4f1;padding:30px 5vw}.footer-inner{max-width:1200px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}.footer-inner p{color:#9eabc0;font-size:12px;margin:5px 0}.admin-panel{margin-top:25px;background:#19191c;border:1px solid var(--line);border-radius:17px;padding:20px;display:none}.admin-panel.show{display:block}.admin-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.admin-top h2{margin:0}.admin-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:12px;font-weight:800;color:#c9c1ad}.field input,.field textarea,.field select{width:100%;border:1px solid #4a463a;border-radius:9px;padding:11px 12px;background:#19191c;outline:none}.field textarea{min-height:75px;resize:vertical}.admin-products{margin-top:18px;display:grid;gap:8px}.admin-item{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:10px}.admin-item small{color:var(--muted)}.admin-item-actions{display:flex;gap:7px;flex-wrap:wrap}.notice{font-size:13px;padding:11px 13px;border-radius:10px;margin:12px 0}.notice.info{background:#332b16;color:#f0d985}.notice.error{background:#fef2f2;color:#991b1b}.notice.success{background:#ecfdf5;color:#065f46}.hidden{display:none!important}
+    dialog{border:0;border-radius:18px;padding:0;width:min(440px,calc(100% - 28px));box-shadow:0 24px 90px #0b122055}dialog::backdrop{background:#0b1220a8;backdrop-filter:blur(4px)}.modal{padding:24px}.modal h2{margin:0 0 6px}.modal p{color:var(--muted);font-size:13px;line-height:1.5}.modal .field{margin-top:13px}.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}.statusline{font-size:12px;color:#9eabc0}
+    @media(max-width:900px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.hero-inner{grid-template-columns:1fr .55fr}.orb span{font-size:75px}}
+    @media(max-width:650px){header{padding:15px 5vw}.hero{padding:40px 5vw}.hero-inner{grid-template-columns:1fr}.hero-visual{display:none}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.product-img{height:145px}.product-body{padding:12px}.product h3{font-size:14px}.price{font-size:16px}.product-bottom{align-items:flex-start;flex-direction:column}.product-bottom .btn{width:100%}.features{grid-template-columns:1fr}.admin-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.section-head h2{font-size:23px}}
+    @media(max-width:380px){.grid{grid-template-columns:1fr}.product-img{height:190px}.header-actions{width:100%}.header-actions .btn{flex:1}}
+
+    input,textarea,select{color:var(--ink);background:#19191c}
+    .product .btn-primary{background:linear-gradient(135deg,#f0cc62,#b58a22);color:#17130a}
+    .btn-primary{background:linear-gradient(135deg,#f0cc62,#b58a22);color:#17130a}
+    .btn-primary:hover{background:#ffe28a}
+    .btn-outline{border-color:#5d543b}
+    .cart-drawer{position:fixed;inset:0 0 0 auto;width:min(420px,100%);height:100dvh;background:#141416;color:#f7f3e9;z-index:1000;box-shadow:-20px 0 70px #0009;padding:22px;overflow:auto;transform:translateX(105%);transition:transform .25s;border-left:1px solid #4c4122}
+    .cart-drawer.open{transform:translateX(0)}
+    .drawer-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:18px}
+    .drawer-head h2{margin:0}.drawer-close{border:1px solid #5d543b;background:#211f19;color:#f7f3e9;border-radius:9px;padding:8px 12px}
+    .cart-row{display:grid;grid-template-columns:1fr auto;gap:10px;border-bottom:1px solid #35332d;padding:13px 0}
+    .cart-row small{color:#b2ac9e}.qty-controls{display:flex;gap:7px;align-items:center;margin-top:8px}
+    .qty-controls button{background:#292519;color:#f0d985;border:1px solid #5d543b;border-radius:7px;padding:4px 9px}
+    .drawer-total{display:flex;justify-content:space-between;font-size:18px;font-weight:850;margin:20px 0}
+    .heart-btn{background:#292519;border:1px solid #5d543b;color:#f0d985;border-radius:9px;padding:8px 10px}
+    .product-actions{display:flex;gap:8px;align-items:center;margin-top:12px}.product-actions .btn{flex:1}
+    .floating-support{position:fixed;right:18px;bottom:18px;z-index:900;display:flex;flex-direction:column;align-items:flex-end;gap:9px}
+    .support-main{border:0;border-radius:999px;background:#d4af37;color:#15120a;font-weight:900;padding:14px 18px;box-shadow:0 8px 28px #0008}
+    .chat-panel{display:none;width:min(350px,calc(100vw - 32px));height:420px;background:#19191c;border:1px solid #5d543b;border-radius:17px;box-shadow:0 20px 70px #0009;overflow:hidden;flex-direction:column}
+    .chat-panel.open{display:flex}.chat-head{background:#262113;color:#f7df82;padding:14px;font-weight:850;display:flex;justify-content:space-between;align-items:center}
+    .chat-messages{flex:1;padding:12px;overflow:auto;display:flex;flex-direction:column;gap:9px}
+    .chat-msg{max-width:85%;padding:9px 11px;border-radius:12px;background:#29271f;color:#f7f3e9;font-size:13px;line-height:1.45;overflow-wrap:anywhere}
+    .chat-msg.mine{align-self:flex-end;background:#d4af37;color:#17130a}
+    .chat-compose{padding:10px;border-top:1px solid #35332d;display:flex;gap:7px}
+    .chat-compose input{min-width:0;flex:1;border:1px solid #4a463a;border-radius:9px;padding:10px}
+    .chat-note{padding:0 12px 10px;color:#b2ac9e;font-size:10px}
+    .admin-chat{margin-top:22px;border-top:1px solid var(--line);padding-top:18px}
+    .chat-list-item{padding:10px;border:1px solid var(--line);border-radius:10px;margin:8px 0;display:flex;justify-content:space-between;gap:8px;align-items:center}
+    @media(max-width:650px){.header-actions{gap:7px}.header-actions .btn{padding:9px 10px;font-size:12px}.product-actions{flex-direction:column}.product-actions .btn{width:100%}}
+
+  </style>
+</head>
+<body>
+  <div class="topbar">GADGET VAULT · MOBILE ACCESSORIES, MADE SIMPLE</div>
+  <header>
+    <div class="brand">
+      <div class="logo">G</div>
+      <div><h1>GADGET VAULT</h1><p>Your everyday tech essentials</p></div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-outline" id="wishlistOpen" type="button">♡ Wishlist <span id="wishlistCount">0</span></button>
+      <button class="btn btn-outline" id="cartOpen" type="button">🛒 Cart <span id="cartCount">0</span></button>
+      <button class="btn btn-outline" id="adminOpen">Admin Login</button>
+      <a class="btn btn-primary" href="#products">Shop Products ↗</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="eyebrow"><span class="dot"></span> Smart accessories. Better everyday.</div>
+        <h2>Small upgrades.<br><span>Big difference.</span></h2>
+        <p>Explore everyday mobile accessories, from charging essentials to audio and protection. Find what you need and send an order enquiry directly through WhatsApp.</p>
+        <a class="btn btn-primary" href="#products">Explore products</a>
+      </div>
+      <div class="hero-visual"><div class="orb"><span>🎧</span></div></div>
+    </div>
+  </section>
+
+  <main>
+    <section id="products">
+      <div class="section-head">
+        <div><h2>Featured accessories</h2><p>Find your next everyday essential.</p></div>
+        <div class="tools"><input class="search" id="searchInput" type="search" placeholder="Search products..."><button class="btn btn-light" id="refreshBtn">Refresh</button></div>
+      </div>
+      <div class="filters" id="filters">
+        <button class="filter active" data-category="all">All products</button>
+        <button class="filter" data-category="audio">Audio</button>
+        <button class="filter" data-category="charging">Charging</button>
+        <button class="filter" data-category="protection">Protection</button>
+        <button class="filter" data-category="power">Power</button>
+        <button class="filter" data-category="other">Other</button>
+      </div>
+      <div id="storeStatus" class="notice info">Connecting to the product catalogue…</div>
+      <div class="grid" id="productGrid"></div>
+    </section>
+
+    <div class="features">
+      <div class="feature"><div class="feature-icon">📱</div><div><strong>Everyday essentials</strong><span>Useful accessories for your phone and daily routine.</span></div></div>
+      <div class="feature"><div class="feature-icon">💬</div><div><strong>Easy order enquiry</strong><span>Send the product name to us through WhatsApp.</span></div></div>
+      <div class="feature"><div class="feature-icon">🔒</div><div><strong>Secure admin access</strong><span>Only the configured admin account can manage products.</span></div></div>
+    </div>
+
+    <section class="admin-panel" id="adminPanel">
+      <div class="admin-top"><div><h2>Product Manager</h2><p style="margin:6px 0;color:#b2ac9e;font-size:13px">Add, edit, activate, or remove catalogue items.</p></div><button class="btn btn-outline" style="color:#e5ddc8;border-color:#5d543b" id="logoutBtn">Sign out</button></div>
+      <div id="adminStatus" class="notice info">Admin tools are ready.</div>
+      <form id="productForm">
+        <input type="hidden" id="editId">
+        <div class="admin-grid">
+          <div class="field"><label for="pName">Product name *</label><input id="pName" required maxlength="100" placeholder="e.g. Wireless Earbuds"></div>
+          <div class="field"><label for="pPrice">Price in PKR *</label><input id="pPrice" required type="number" min="0" step="1" placeholder="1499"></div>
+          <div class="field"><label for="pCategory">Category *</label><select id="pCategory" required><option value="audio">Audio</option><option value="charging">Charging</option><option value="protection">Protection</option><option value="power">Power</option><option value="other">Other</option></select></div>
+          <div class="field"><label for="pStock">Stock quantity</label><input id="pStock" type="number" min="0" step="1" value="10"></div>
+          <div class="field full"><label for="pImage">Product image URL</label><input id="pImage" type="url" placeholder="https://..."></div>
+          <div class="field full"><label for="pDescription">Description</label><textarea id="pDescription" maxlength="500" placeholder="Short product description"></textarea></div>
+          <div class="field"><label><input id="pActive" type="checkbox" checked style="width:auto;margin-right:7px">Show on public store</label></div>
+          <div class="field" style="justify-content:end;flex-direction:row;align-items:center;gap:8px"><button type="button" class="btn btn-outline" style="color:#e5ddc8;border-color:#5d543b" id="cancelEditBtn">Clear</button><button type="submit" class="btn btn-primary" id="saveProductBtn">Save product</button></div>
+        </div>
+      </form>
+      <h3 style="margin:24px 0 8px">Current products</h3>
+      <div class="admin-products" id="adminProducts"></div>
+      <div class="admin-chat">
+        <h3>Customer Live Chats</h3>
+        <p style="color:var(--muted);font-size:12px">Reply to customers who message through the website chat.</p>
+        <div id="adminChatList"></div>
+        <div style="margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:12px">
+          <div id="adminChatMessages" class="chat-messages" style="height:180px;min-height:100px"></div>
+          <div class="chat-compose"><input id="adminChatReply" maxlength="500" placeholder="Reply to selected customer..."><button class="btn btn-primary btn-small" id="adminChatSend" type="button">Reply</button></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart">
+    <div class="drawer-head"><h2 id="drawerTitle">Your Cart</h2><button class="drawer-close" id="drawerClose" type="button">Close ✕</button></div>
+    <div id="drawerItems"></div>
+    <div class="drawer-total"><span>Total</span><span id="drawerTotal">Rs. 0</span></div>
+    <button class="btn btn-primary" id="checkoutBtn" type="button" style="width:100%">Order via WhatsApp</button>
+    <p style="color:#b2ac9e;font-size:12px;line-height:1.5">Availability and delivery charges will be confirmed before dispatch.</p>
+  </aside>
+  <div class="floating-support">
+    <div class="chat-panel" id="chatPanel">
+      <div class="chat-head"><span>Gadget Vault Support</span><button id="chatClose" type="button" class="drawer-close">✕</button></div>
+      <div class="chat-messages" id="chatMessages"><div class="chat-msg">Assalam-o-Alaikum! How can we help you?</div></div>
+      <div class="chat-compose"><input id="chatInput" maxlength="500" placeholder="Type your message..." aria-label="Chat message"><button class="btn btn-primary btn-small" id="chatSend" type="button">Send</button></div>
+      <div class="chat-note">Website chat saves messages to Firebase when chat rules are configured. WhatsApp is also available.</div>
+    </div>
+    <button class="support-main" id="chatToggle" type="button">💬 Chat / WhatsApp</button>
+  </div>
+  <footer><div class="footer-inner"><div><strong>GADGET VAULT</strong><p>Mobile accessories for everyday life.</p></div><div><p>© 2026 Gadget Vault</p><p>Prices and availability are subject to confirmation.</p></div></div></footer>
+
+  <dialog id="loginDialog">
+    <form class="modal" id="loginForm">
+      <h2>Admin login</h2><p>Sign in using the admin email and password created in Firebase Authentication.</p>
+      <div class="field"><label for="adminEmail">Email address</label><input id="adminEmail" type="email" autocomplete="username" required></div>
+      <div class="field"><label for="adminPassword">Password</label><input id="adminPassword" type="password" autocomplete="current-password" required></div>
+      <div id="loginStatus" class="notice hidden"></div>
+      <div class="modal-actions"><button type="button" class="btn btn-outline" style="color:#e5ddc8;border-color:#5d543b" id="loginCancel">Cancel</button><button type="submit" class="btn btn-primary" id="loginBtn">Sign in</button></div>
+    </form>
+  </dialog>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, signInAnonymously } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+    import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy, serverTimestamp, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+
+    // Public Firebase web config. Security is enforced by Firebase Authentication + Firestore Rules.
+    // Live chat also requires the dedicated /chats Firestore rules provided with this upgrade.
+    const firebaseConfig = {
+      apiKey: "AIzaSyD-7cDoeZgetgfGYUMlg5vWzrsWzcGgReA",
+      authDomain: "mobilehub-pk.firebaseapp.com",
+      projectId: "mobilehub-pk",
+      storageBucket: "mobilehub-pk.firebasestorage.app",
+      messagingSenderId: "108065685047",
+      appId: "1:108065685047:web:d4f8160bd2bd433c9789b2",
+      measurementId: "G-E9DD2QLWN4"
+    };
+
+    // IMPORTANT: Replace with your own WhatsApp number, country code included, digits only.
+    // Example for Pakistan: 923001234567 (do not include + or spaces).
+    const WHATSAPP_NUMBER = "923264896217";
+    // Must match the UID allowed by your Firestore Rules.
+    const ADMIN_UID = "IRjAja0darZpurtDxe0i18y9l133";
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const $ = (id) => document.getElementById(id);
+    let allProducts = [];
+    let selectedCategory = "all";
+    let currentUser = null;
+    let cart = JSON.parse(localStorage.getItem("gv_cart") || "[]");
+    let wishlist = JSON.parse(localStorage.getItem("gv_wishlist") || "[]");
+    let chatUser = null;
+    let chatUnsubscribe = null;
+    let adminChatsUnsubscribe = null;
+    let activeAdminChatId = null;
+
+    const escapeHtml = (value="") => String(value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+    const formatPrice = value => "Rs. " + Number(value || 0).toLocaleString("en-PK");
+    const setNotice = (el, message, type="info") => { el.className = "notice " + type; el.textContent = message; };
+    const safeImage = value => { try { const u = new URL(value); return ["https:","http:"].includes(u.protocol) ? u.href : ""; } catch { return ""; } };
+    function categoryName(cat){ return ({audio:"Audio",charging:"Charging",protection:"Protection",power:"Power",other:"Other"})[String(cat||"other").toLowerCase()] || String(cat||"Other"); }
+    function orderLink(product){
+      const message = `Assalam-o-Alaikum, I want to order/enquire about:\nProduct: ${product.name}\nPrice: ${formatPrice(product.price)}\nPlease confirm availability.`;
+      const numberReady = /^92\d{10}$/.test(WHATSAPP_NUMBER);
+      if (numberReady) return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      return `https://wa.me/?text=${encodeURIComponent(message + "\nPlease configure the store WhatsApp number.")}`;
+    }
+    function renderProducts(){
+      const term = $("searchInput").value.trim().toLowerCase();
+      const products = allProducts.filter(p => p.active !== false && (selectedCategory==="all" || String(p.category||"other").toLowerCase()===selectedCategory) && (`${p.name||""} ${p.description||""} ${p.category||""}`).toLowerCase().includes(term));
+      $("productGrid").innerHTML = products.length ? products.map(p => {
+        const image = safeImage(p.imageUrl || "");
+        return `<article class="product"><div class="product-img">${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(p.name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><div class="fallback" style="display:none">📦</div>` : `<div class="fallback">📦</div>`}</div><div class="product-body"><div class="category">${escapeHtml(categoryName(p.category))}</div><h3>${escapeHtml(p.name||"Unnamed product")}</h3><p class="desc">${escapeHtml(p.description||"Everyday mobile accessory.")}</p><div class="product-bottom"><div><div class="price">${formatPrice(p.price)}</div><div class="stock">${Number(p.stock||0)>0 ? `${Number(p.stock)} in stock` : "Availability on request"}</div></div></div><div class="product-actions"><button class="btn btn-primary btn-small" type="button" data-cart="${escapeHtml(p.id)}">Add to cart</button><button class="heart-btn" type="button" aria-label="Toggle wishlist" data-wish="${escapeHtml(p.id)}">${wishlist.includes(p.id) ? "♥ Saved" : "♡ Save"}</button><a class="btn btn-outline btn-small" target="_blank" rel="noopener noreferrer" href="${orderLink(p)}">WhatsApp ↗</a></div></div></article>`;
+      }).join("") : `<div class="empty"><div style="font-size:32px;margin-bottom:8px">🔎</div><strong>No products found</strong><p>Try another search or category.</p></div>`;
+      $("productGrid").querySelectorAll("[data-cart]").forEach(b=>b.addEventListener("click",()=>addToCart(b.dataset.cart)));
+      $("productGrid").querySelectorAll("[data-wish]").forEach(b=>b.addEventListener("click",()=>toggleWishlist(b.dataset.wish)));
+    }
+    function persistShopping(){localStorage.setItem("gv_cart",JSON.stringify(cart));localStorage.setItem("gv_wishlist",JSON.stringify(wishlist));updateShoppingCounts();}
+    function updateShoppingCounts(){$("cartCount").textContent=cart.reduce((n,x)=>n+Number(x.qty||0),0);$("wishlistCount").textContent=wishlist.length;}
+    function addToCart(id){const p=allProducts.find(x=>x.id===id);if(!p)return;const found=cart.find(x=>x.id===id);if(found)found.qty=Math.min(99,Number(found.qty||1)+1);else cart.push({id,qty:1});persistShopping();renderDrawer("cart");$("cartDrawer").classList.add("open");}
+    function toggleWishlist(id){wishlist=wishlist.includes(id)?wishlist.filter(x=>x!==id):[...wishlist,id];persistShopping();renderProducts();if($("drawerTitle").textContent==="Your Wishlist" && $("cartDrawer").classList.contains("open"))renderDrawer("wishlist");}
+    function renderDrawer(mode="cart"){
+      const isWish=mode==="wishlist";$("drawerTitle").textContent=isWish?"Your Wishlist":"Your Cart";
+      const items=isWish?wishlist.map(id=>({id,qty:1})):cart;
+      const valid=items.map(item=>({...item,product:allProducts.find(p=>p.id===item.id)})).filter(x=>x.product);
+      $("drawerItems").innerHTML=valid.length?valid.map(({id,qty,product})=>`<div class="cart-row"><div><strong>${escapeHtml(product.name)}</strong><br><small>${formatPrice(product.price)}${isWish?"":" each"}</small>${isWish?"":`<div class="qty-controls"><button type="button" data-minus="${escapeHtml(id)}">−</button><span>${qty}</span><button type="button" data-plus="${escapeHtml(id)}">+</button><button type="button" data-remove="${escapeHtml(id)}">Remove</button></div>`}</div><strong>${isWish?"":formatPrice(Number(product.price||0)*Number(qty||1))}</strong></div>`).join(""):'<div class="empty">Nothing here yet. Add products to get started.</div>';
+      const total=valid.reduce((sum,x)=>sum+Number(x.product.price||0)*Number(x.qty||1),0);$("drawerTotal").textContent=formatPrice(total);$("checkoutBtn").style.display=isWish?"none":"block";
+      $("drawerItems").querySelectorAll("[data-plus]").forEach(b=>b.addEventListener("click",()=>{const x=cart.find(i=>i.id===b.dataset.plus);if(x)x.qty=Math.min(99,x.qty+1);persistShopping();renderDrawer("cart");}));
+      $("drawerItems").querySelectorAll("[data-minus]").forEach(b=>b.addEventListener("click",()=>{const x=cart.find(i=>i.id===b.dataset.minus);if(x){x.qty--;if(x.qty<=0)cart=cart.filter(i=>i.id!==x.id);}persistShopping();renderDrawer("cart");}));
+      $("drawerItems").querySelectorAll("[data-remove]").forEach(b=>b.addEventListener("click",()=>{cart=cart.filter(i=>i.id!==b.dataset.remove);persistShopping();renderDrawer("cart");}));
+    }
+    async function loadProducts(){
+      setNotice($("storeStatus"),"Loading products from Firebase…","info");
+      try {
+        const snapshot = await getDocs(collection(db,"products"));
+        allProducts = snapshot.docs.map(d => ({id:d.id,...d.data()}));
+        renderProducts();
+        $("storeStatus").classList.add("hidden");
+        if(currentUser && currentUser.uid===ADMIN_UID) renderAdminProducts();
+      } catch(err){
+        console.error(err);
+        setNotice($("storeStatus"),"Could not load products from Firebase. Check the project config and Firestore Rules. Details: "+(err.code||err.message||"unknown error"),"error");
+        $("productGrid").innerHTML = `<div class="empty">Products could not be loaded. Please try refreshing.</div>`;
+      }
+    }
+    function renderAdminProducts(){
+      const host=$("adminProducts");
+      if(!allProducts.length){host.innerHTML='<div class="empty">No products yet. Add your first product above.</div>';return;}
+      host.innerHTML=allProducts.map(p=>`<div class="admin-item"><div><strong>${escapeHtml(p.name||"Unnamed product")}</strong><br><small>${formatPrice(p.price)} · ${escapeHtml(categoryName(p.category))} · Stock: ${Number(p.stock||0)} · ${p.active===false?"Hidden":"Visible"}</small></div><div class="admin-item-actions"><button class="btn btn-light btn-small" data-edit="${escapeHtml(p.id)}">Edit</button><button class="btn btn-danger btn-small" data-delete="${escapeHtml(p.id)}">Delete</button></div></div>`).join("");
+      host.querySelectorAll("[data-edit]").forEach(b=>b.addEventListener("click",()=>startEdit(b.dataset.edit)));
+      host.querySelectorAll("[data-delete]").forEach(b=>b.addEventListener("click",()=>removeProduct(b.dataset.delete)));
+    }
+    function startEdit(id){
+      const p=allProducts.find(x=>x.id===id);if(!p)return;
+      $("editId").value=p.id;$("pName").value=p.name||"";$("pPrice").value=p.price??"";$("pCategory").value=String(p.category||"other").toLowerCase();$("pStock").value=p.stock??0;$("pImage").value=p.imageUrl||"";$("pDescription").value=p.description||"";$("pActive").checked=p.active!==false;$("saveProductBtn").textContent="Update product";
+      $("productForm").scrollIntoView({behavior:"smooth",block:"start"});
+    }
+    function clearForm(){ $("productForm").reset();$("editId").value="";$("pStock").value=10;$("pActive").checked=true;$("saveProductBtn").textContent="Save product"; }
+    async function removeProduct(id){
+      if(!currentUser || currentUser.uid!==ADMIN_UID){setNotice($("adminStatus"),"This account is not authorized to manage products.","error");return;}
+      if(!confirm("Delete this product permanently?"))return;
+      try{await deleteDoc(doc(db,"products",id));setNotice($("adminStatus"),"Product deleted.","success");await loadProducts();}
+      catch(err){setNotice($("adminStatus"),"Delete failed: "+(err.code||err.message),"error");}
+    }
+
+    async function ensureChatUser(){
+      if(auth.currentUser && auth.currentUser.isAnonymous){chatUser=auth.currentUser;return chatUser;}
+      const credential=await signInAnonymously(auth);chatUser=credential.user;return chatUser;
+    }
+    function startCustomerChat(){
+      if(chatUnsubscribe){chatUnsubscribe();chatUnsubscribe=null;}
+      ensureChatUser().then(async user=>{
+        const chatRef=doc(db,"chats",user.uid);
+        await setDoc(chatRef,{ownerUid:user.uid,createdAt:serverTimestamp(),lastMessage:"",lastUpdated:serverTimestamp()},{merge:true});
+        chatUnsubscribe=onSnapshot(query(collection(db,"chats",user.uid,"messages"),orderBy("createdAt","asc")),snap=>{
+          const host=$("chatMessages");
+          host.innerHTML='<div class="chat-msg">Assalam-o-Alaikum! How can we help you?</div>'+snap.docs.map(d=>{const m=d.data();return `<div class="chat-msg ${m.senderUid===user.uid?"mine":""}">${escapeHtml(m.text||"")}</div>`;}).join("");
+          host.scrollTop=host.scrollHeight;
+        },err=>console.warn("Chat messages unavailable. Check Firestore chat rules.",err));
+      }).catch(err=>console.warn("Anonymous chat setup failed",err));
+    }
+    async function sendChatMessage(){
+      const text=$("chatInput").value.trim();if(!text)return;
+      try{
+        const user=await ensureChatUser();
+        await setDoc(doc(db,"chats",user.uid),{ownerUid:user.uid,lastMessage:text,lastUpdated:serverTimestamp(),createdAt:serverTimestamp()},{merge:true});
+        await addDoc(collection(db,"chats",user.uid,"messages"),{text,senderUid:user.uid,senderRole:"customer",createdAt:serverTimestamp()});
+        $("chatInput").value="";
+      }catch(err){alert("Website chat abhi configure nahi hai. WhatsApp support use karein.");console.error(err);}
+    }
+    function startAdminChatInbox(){
+      if(adminChatsUnsubscribe)adminChatsUnsubscribe();
+      adminChatsUnsubscribe=onSnapshot(query(collection(db,"chats"),orderBy("lastUpdated","desc")),snap=>{
+        const host=$("adminChatList");
+        if(!host)return;
+        host.innerHTML=snap.empty?'<p>No customer chats yet.</p>':snap.docs.map(d=>`<div class="chat-list-item"><div><strong>Customer chat</strong><br><small>${escapeHtml((d.data().lastMessage||"No messages").slice(0,80))}</small></div><button class="btn btn-light btn-small" data-open-chat="${escapeHtml(d.id)}">Open</button></div>`).join("");
+        host.querySelectorAll("[data-open-chat]").forEach(b=>b.addEventListener("click",()=>openAdminChat(b.dataset.openChat)));
+      },err=>console.warn("Admin chat inbox unavailable. Check Firestore chat rules.",err));
+    }
+    function openAdminChat(chatId){
+      activeAdminChatId=chatId;
+      const host=$("adminChatMessages");host.innerHTML="<p>Loading messages…</p>";
+      if(window.__adminMessageUnsub)window.__adminMessageUnsub();
+      window.__adminMessageUnsub=onSnapshot(query(collection(db,"chats",chatId,"messages"),orderBy("createdAt","asc")),snap=>{
+        host.innerHTML=snap.docs.map(d=>{const m=d.data();return `<div class="chat-msg ${m.senderRole==="admin"?"mine":""}">${escapeHtml(m.senderRole==="admin"?"You: ":"Customer: ")}${escapeHtml(m.text||"")}</div>`;}).join("");
+        host.scrollTop=host.scrollHeight;
+      },err=>{host.textContent="Could not load chat. Check Firestore rules.";console.warn(err);});
+    }
+    async function sendAdminChatMessage(){
+      const text=$("adminChatReply").value.trim();if(!text||!activeAdminChatId||!currentUser)return;
+      try{
+        await addDoc(collection(db,"chats",activeAdminChatId,"messages"),{text,senderUid:currentUser.uid,senderRole:"admin",createdAt:serverTimestamp()});
+        await setDoc(doc(db,"chats",activeAdminChatId),{lastMessage:text,lastUpdated:serverTimestamp()},{merge:true});
+        $("adminChatReply").value="";
+      }catch(err){alert("Admin chat send failed. Firestore rules check karein.");console.error(err);}
+    }
+
+    $("productForm").addEventListener("submit",async e=>{
+      e.preventDefault();
+      if(!currentUser || currentUser.uid!==ADMIN_UID){setNotice($("adminStatus"),"This account is not authorized to manage products.","error");return;}
+      const name=$("pName").value.trim(), price=Number($("pPrice").value), stock=Number($("pStock").value||0);
+      if(!name || !Number.isFinite(price)||price<0||!Number.isFinite(stock)||stock<0){setNotice($("adminStatus"),"Please enter a valid name, price, and stock quantity.","error");return;}
+      const payload={name,price,category:$("pCategory").value,stock,description:$("pDescription").value.trim(),imageUrl:safeImage($("pImage").value.trim()),active:$("pActive").checked,updatedAt:serverTimestamp()};
+      const id=$("editId").value;
+      $("saveProductBtn").disabled=true;
+      try{
+        if(id) await updateDoc(doc(db,"products",id),payload);
+        else await addDoc(collection(db,"products"),{...payload,createdAt:serverTimestamp()});
+        setNotice($("adminStatus"),id?"Product updated successfully.":"Product added successfully.","success");
+        clearForm();await loadProducts();
+      }catch(err){console.error(err);setNotice($("adminStatus"),"Could not save product: "+(err.code||err.message||"unknown error"),"error");}
+      finally{$("saveProductBtn").disabled=false;}
+    });
+    $("cancelEditBtn").addEventListener("click",clearForm);
+    $("adminOpen").addEventListener("click",()=>{
+      if(currentUser && currentUser.uid===ADMIN_UID){$("adminPanel").classList.toggle("show");if($("adminPanel").classList.contains("show"))$("adminPanel").scrollIntoView({behavior:"smooth"});startAdminChatInbox();return;}
+      $("loginStatus").classList.add("hidden");$("loginDialog").showModal();
+    });
+    $("loginCancel").addEventListener("click",()=>$("loginDialog").close());
+    $("loginForm").addEventListener("submit",async e=>{
+      e.preventDefault();const btn=$("loginBtn");btn.disabled=true;btn.textContent="Signing in…";
+      try{
+        const result=await signInWithEmailAndPassword(auth,$("adminEmail").value.trim(),$("adminPassword").value);
+        if(result.user.uid!==ADMIN_UID){await signOut(auth);throw new Error("This account is not the authorized store admin. Check ADMIN_UID and Firestore Rules.");}
+        $("loginDialog").close();$("adminPanel").classList.add("show");setNotice($("adminStatus"),"Signed in. You can manage products.","success");renderAdminProducts();startAdminChatInbox();$("adminPanel").scrollIntoView({behavior:"smooth"});
+      }catch(err){$("loginStatus").className="notice error";$("loginStatus").textContent=err.code==="auth/invalid-credential"?"Email or password is incorrect.":(err.message||"Sign-in failed.");}
+      finally{btn.disabled=false;btn.textContent="Sign in";}
+    });
+    $("logoutBtn").addEventListener("click",async()=>{await signOut(auth);$("adminPanel").classList.remove("show");setNotice($("storeStatus"),"Signed out of admin.","info");$("storeStatus").classList.remove("hidden");});
+    $("cartOpen").addEventListener("click",()=>{renderDrawer("cart");$("cartDrawer").classList.add("open");});
+    $("wishlistOpen").addEventListener("click",()=>{renderDrawer("wishlist");$("cartDrawer").classList.add("open");});
+    $("drawerClose").addEventListener("click",()=>$("cartDrawer").classList.remove("open"));
+    $("checkoutBtn").addEventListener("click",()=>{
+      const items=cart.map(i=>{const p=allProducts.find(x=>x.id===i.id);return p?`${p.name} x ${i.qty} — ${formatPrice(Number(p.price||0)*i.qty)}`:"";}).filter(Boolean);
+      if(!items.length){alert("Your cart is empty.");return;}
+      const total=cart.reduce((sum,i)=>{const p=allProducts.find(x=>x.id===i.id);return sum+(p?Number(p.price||0)*i.qty:0);},0);
+      const msg=`Assalam-o-Alaikum, I want to order from Gadget Vault:\n${items.join("\n")}\nTotal: ${formatPrice(total)}\nPlease confirm availability and delivery charges.`;
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`,"_blank","noopener");
+    });
+    $("chatToggle").addEventListener("click",()=>{const open=$("chatPanel").classList.toggle("open");if(open)startCustomerChat();});
+    $("chatClose").addEventListener("click",()=>$("chatPanel").classList.remove("open"));
+    $("chatSend").addEventListener("click",sendChatMessage);
+    $("chatInput").addEventListener("keydown",e=>{if(e.key==="Enter")sendChatMessage();});
+    $("adminChatSend").addEventListener("click",sendAdminChatMessage);
+    $("searchInput").addEventListener("input",renderProducts);
+    $("refreshBtn").addEventListener("click",loadProducts);
+    $("filters").querySelectorAll("[data-category]").forEach(b=>b.addEventListener("click",()=>{selectedCategory=b.dataset.category;$("filters").querySelectorAll(".filter").forEach(x=>x.classList.toggle("active",x===b));renderProducts();}));
+    onAuthStateChanged(auth,user=>{
+      currentUser=user;
+      if(user && user.uid===ADMIN_UID){$("adminOpen").textContent="Admin Dashboard";if($("adminPanel").classList.contains("show")){renderAdminProducts();startAdminChatInbox();}}
+      else {$("adminOpen").textContent="Admin Login";$("adminPanel").classList.remove("show");}
+    });
+    updateShoppingCounts();
+    loadProducts();
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#101827">
   <title>Gadget Vault | Mobile Accessories</title>
   <meta name="description" content="Shop mobile accessories at Gadget Vault. Browse products and order through WhatsApp.">
