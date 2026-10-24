@@ -275,10 +275,19 @@
       catch(err){setNotice($("adminStatus"),"Delete failed: "+(err.code||err.message),"error");}
     }
 
-    async function ensureChatUser(){
-      if(auth.currentUser && auth.currentUser.isAnonymous){chatUser=auth.currentUser;return chatUser;}
-      const credential=await signInAnonymously(auth);chatUser=credential.user;return chatUser;
-    }
+   async function ensureChatUser(){
+  // Wait until Firebase restores the previous login after refresh.
+  await auth.authStateReady();
+
+  if(auth.currentUser && auth.currentUser.isAnonymous){
+    chatUser = auth.currentUser;
+    return chatUser;
+  }
+
+  const credential = await signInAnonymously(auth);
+  chatUser = credential.user;
+  return chatUser;
+}
     function startCustomerChat(){
       if(chatUnsubscribe){chatUnsubscribe();chatUnsubscribe=null;}
       ensureChatUser().then(async user=>{
