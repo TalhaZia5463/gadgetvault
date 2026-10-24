@@ -562,7 +562,9 @@ $("checkoutForm").addEventListener("submit", async (event) => {
       "_blank"
     );
 
-    cart = [];
+   cart = [];
+persistShopping();
+renderDrawer("cart");
     
 
     $("checkoutForm").reset();
