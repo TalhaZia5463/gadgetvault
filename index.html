@@ -127,6 +127,15 @@
           <div class="field" style="justify-content:end;flex-direction:row;align-items:center;gap:8px"><button type="button" class="btn btn-outline" style="color:#e5ddc8;border-color:#5d543b" id="cancelEditBtn">Clear</button><button type="submit" class="btn btn-primary" id="saveProductBtn">Save product</button></div>
         </div>
       </form>
+      
+<h3 style="margin:24px 0 8px">Customer Orders</h3>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+  <button type="button" class="btn btn-outline" id="refreshOrdersBtn">Refresh Orders</button>
+</div>
+<div id="adminOrders">
+  <p>Orders will appear here.</p>
+</div>
+
       <h3 style="margin:24px 0 8px">Current products</h3>
       <div class="admin-products" id="adminProducts"></div>
       <div class="admin-chat">
@@ -319,6 +328,96 @@
       host.querySelectorAll("[data-edit]").forEach(b=>b.addEventListener("click",()=>startEdit(b.dataset.edit)));
       host.querySelectorAll("[data-delete]").forEach(b=>b.addEventListener("click",()=>removeProduct(b.dataset.delete)));
     }
+    
+let adminOrdersUnsubscribe = null;
+
+function startAdminOrders() {
+  const host = $("adminOrders");
+  if (!host) return;
+
+  host.innerHTML = "<p>Loading customer orders...</p>";
+
+  if (adminOrdersUnsubscribe) adminOrdersUnsubscribe();
+
+  adminOrdersUnsubscribe = onSnapshot(
+    query(collection(db, "orders"), orderBy("createdAt", "desc")),
+    (snapshot) => {
+      if (snapshot.empty) {
+        host.innerHTML = "<p>No customer orders yet.</p>";
+        return;
+      }
+
+      host.innerHTML = snapshot.docs.map((orderDoc) => {
+        const o = orderDoc.data();
+        const items = Array.isArray(o.items) ? o.items : [];
+
+        return `
+          <div class="admin-item" style="margin-bottom:12px;display:block">
+            <strong>Order ID:</strong> ${escapeHtml(orderDoc.id)}<br>
+            <strong>Customer:</strong> ${escapeHtml(o.customerName || "N/A")}<br>
+            <strong>Phone:</strong> ${escapeHtml(o.customerPhone || "N/A")}<br>
+            <strong>City:</strong> ${escapeHtml(o.customerCity || "N/A")}<br>
+            <strong>Address:</strong> ${escapeHtml(o.customerAddress || "N/A")}<br>
+            <strong>Total:</strong> ${formatPrice(o.total)}<br>
+            <strong>Items:</strong> ${items.map(i =>
+              escapeHtml(i.name || i.productName || "Product") +
+              " × " + Number(i.quantity || i.qty || 1)
+            ).join(", ")}<br>
+            <strong>Payment:</strong> ${escapeHtml(o.paymentMethod || "N/A")} —
+            ${escapeHtml(o.paymentStatus || "Pending Verification")}<br>
+            <strong>Order status:</strong> ${escapeHtml(o.status || "Pending Confirmation")}
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+              <button type="button" class="btn btn-light btn-small"
+                data-verify-order="${escapeHtml(orderDoc.id)}">Verify Payment</button>
+              <select data-order-status="${escapeHtml(orderDoc.id)}">
+                ${["Pending Confirmation","Confirmed","Shipped","Delivered","Cancelled"].map(s =>
+                  `<option value="${s}" ${o.status === s ? "selected" : ""}>${s}</option>`
+                ).join("")}
+              </select>
+              <button type="button" class="btn btn-primary btn-small"
+                data-save-order="${escapeHtml(orderDoc.id)}">Save Status</button>
+            </div>
+          </div>`;
+      }).join("");
+
+      host.querySelectorAll("[data-verify-order]").forEach(button => {
+        button.addEventListener("click", async () => {
+          if (!confirm("JazzCash payment receive hone ki tasdeeq kar li hai?")) return;
+          try {
+            await updateDoc(doc(db, "orders", button.dataset.verifyOrder), {
+              paymentStatus: "Verified"
+            });
+          } catch (err) {
+            alert("Payment status update nahi hua: " + (err.code || err.message));
+          }
+        });
+      });
+
+      host.querySelectorAll("[data-save-order]").forEach(button => {
+        button.addEventListener("click", async () => {
+          const id = button.dataset.saveOrder;
+          const select = host.querySelector(`[data-order-status="${id}"]`);
+          try {
+            await updateDoc(doc(db, "orders", id), {
+              status: select.value
+            });
+          } catch (err) {
+            alert("Order status update nahi hua: " + (err.code || err.message));
+          }
+        });
+      });
+    },
+    (err) => {
+      console.error("Orders loading failed:", err);
+      host.innerHTML =
+        "<p>Orders load nahi hue. Firestore Rules check karein: " +
+        escapeHtml(err.code || err.message || "unknown error") + "</p>";
+    }
+  );
+}
+
+$("refreshOrdersBtn")?.addEventListener("click", () => startAdminOrders());
+
     function startEdit(id){
       const p=allProducts.find(x=>x.id===id);if(!p)return;
       $("editId").value=p.id;$("pName").value=p.name||"";$("pPrice").value=p.price??"";$("pCategory").value=String(p.category||"other").toLowerCase();$("pStock").value=p.stock??0;$("pImage").value=p.imageUrl||"";$("pDescription").value=p.description||"";$("pActive").checked=p.active!==false;$("saveProductBtn").textContent="Update product";
@@ -420,7 +519,9 @@
       try{
         const result=await signInWithEmailAndPassword(auth,$("adminEmail").value.trim(),$("adminPassword").value);
         if(result.user.uid!==ADMIN_UID){await signOut(auth);throw new Error("This account is not the authorized store admin. Check ADMIN_UID and Firestore Rules.");}
-        $("loginDialog").close();$("adminPanel").classList.add("show");setNotice($("adminStatus"),"Signed in. You can manage products.","success");renderAdminProducts();startAdminChatInbox();$("adminPanel").scrollIntoView({behavior:"smooth"});
+        
+$("loginDialog").close();$("adminPanel").classList.add("show");setNotice($("adminStatus"),"Signed in. You can manage products and orders.","success");renderAdminProducts();startAdminChatInbox();startAdminOrders();$("adminPanel").scrollIntoView({behavior:"smooth"});
+
       }catch(err){$("loginStatus").className="notice error";$("loginStatus").textContent=err.code==="auth/invalid-credential"?"Email or password is incorrect.":(err.message||"Sign-in failed.");}
       finally{btn.disabled=false;btn.textContent="Sign in";}
     });
