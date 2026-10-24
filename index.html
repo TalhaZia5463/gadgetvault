@@ -197,6 +197,31 @@
         placeholder="House number, street, area and nearby landmark"></textarea>
     </div>
 
+    <div class="field">
+      <label>JazzCash Payment Details</label>
+      <div style="padding:14px;border:1px solid #ddd;border-radius:10px">
+        <p style="margin:0 0 8px">
+          <strong>Account Title:</strong> TALHA ZIYA
+        </p>
+        <p style="margin:0 0 8px">
+          <strong>JazzCash Number:</strong> 03264896217
+        </p>
+        <p style="margin:0">
+          Pehle payment bhejein, phir apna Transaction ID neeche enter karein.
+        </p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="jazzcashTransactionId">
+        JazzCash Transaction ID / TID *
+      </label>
+      <input id="jazzcashTransactionId" type="text"
+        required maxlength="100"
+        autocomplete="off"
+        placeholder="Payment ke baad milne wala TID enter karein">
+    </div>
+
     
 <div class="field">
   <label>Payment method</label>
@@ -365,6 +390,8 @@ function startAdminOrders() {
             ).join(", ")}<br>
             <strong>Payment:</strong> ${escapeHtml(o.paymentMethod || "N/A")} —
             ${escapeHtml(o.paymentStatus || "Pending Verification")}<br>
+            <strong>JazzCash Transaction ID:</strong>
+${escapeHtml(o.jazzcashTransactionId || "Not provided")}<br>
             <strong>Order status:</strong> ${escapeHtml(o.status || "Pending Confirmation")}
             <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
               <button type="button" class="btn btn-light btn-small"
@@ -631,6 +658,8 @@ $("checkoutForm").addEventListener("submit", async (event) => {
       customerPhone,
       customerCity,
       customerAddress,
+      jazzcashTransactionId:
+  document.getElementById("jazzcashTransactionId").value.trim(),
       paymentMethod: "JazzCash",
       paymentStatus: "Pending Verification",
       status: "Pending Confirmation",
